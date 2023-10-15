@@ -1,0 +1,23 @@
+﻿@model Loja.Models.Cliente
+
+@{ 
+    ViewBag.Title = "Excluir";
+}
+
+<h2>Excluir</h2>
+<h4>Confirma a exclusão do cliente</h4>
+
+<p>
+    @Model.Nome
+</p>
+
+<hr />
+
+<div>
+    <form method="post">
+        <input type="hidden" name="Id" value="@Model.Id"/>
+        <hr />
+        <a href="/Cliente/Index" class="btn btn-default">Voltar</a>
+        <input type="submit" value="Excluir" class="btn btn-danger" />
+    </form>
+</div>
