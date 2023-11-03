@@ -1,0 +1,22 @@
+﻿@model Loja.Models.Cliente
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<h2>Dados do cliente</h2>
+<dl>
+    <dt>Nome:</dt>
+    <dd>@Model.Nome</dd>
+    <dt>E-mail:</dt>
+    <dd>@Model.Email</dd>
+    <dt>Telefone:</dt>
+    <dd>@Model.Telefone</dd>
+</dl>
+
+<div>
+    <hr />
+    <a href="/Cliente/Index" class="btn btn-default">Voltar</a>
+    <a href="/Cliente/Alterar/@Model.Id" class="btn btn-default">Alterar</a>
+    <a href="/Cliente/Excluir/@Model.Id" class="btn btn-default">Excluir</a>
+</div>

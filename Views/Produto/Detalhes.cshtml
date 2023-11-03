@@ -1,0 +1,21 @@
+﻿@model Loja.Models.Produto
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+<h2>Dados do Produto</h2>
+<dl>
+    <dt>Produto:</dt>
+    <dd>@Model.Nome</dd>
+    <dt>Preço:</dt>
+    <dd>@Model.Preco.ToString("c")</dd>
+    <dt>Estoque:</dt>
+    <dd>@Model.Estoque</dd>
+</dl>
+
+<div>
+    <hr />
+    <a href="/Produto/Index" class="btn btn-default">Voltar</a>
+    <a href="/Produto/Alterar/@Model.Id" class="btn btn-default">Alterar</a>
+    <a href="/Produto/Excluir/@Model.Id" class="btn btn-default">Excluir</a>
+</div>
