@@ -8,44 +8,61 @@ namespace Loja.BLL
 {
     public class ClienteBLL : IClienteDados
     {
+        private IClienteDados dal;
+
+        public ClienteBLL(IClienteDados clienteDados)
+        {
+            this.dal = clienteDados;
+        }
         public void Alterar(Cliente cliente)
         {
-            throw new NotImplementedException();
+            Validar(cliente);
+            if (string.IsNullOrEmpty(cliente.Id))
+            {
+                throw new Exception("O Id deve ser informado.");
+            }
+            dal.Alterar(cliente);
         }
 
         public void Excluir(string Id)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(Id))
+            {
+                throw new Exception("O Id deve ser informado.");
+            }
+            dal.Excluir(Id);
         }
 
         public void Incluir(Cliente cliente)
         {
-            if (string.IsNullOrEmpty(cliente.Nome))
-            {
-                throw new ApplicationException("O nome deve ser informado");
-            } 
-            if(string.IsNullOrEmpty (cliente.Id))
+            Validar(cliente);
+            if (string.IsNullOrEmpty(cliente.Id))
             {
                 cliente.Id = Guid.NewGuid().ToString();
             }
-            var dal = new ClienteDAL();
             dal.Incluir(cliente);
+        }
 
+        private static void Validar(Cliente cliente)
+        {
+            if (string.IsNullOrEmpty(cliente.Nome))
+            {
+                throw new ApplicationException("O nome deve ser informado");
+            }
         }
 
         public Cliente ObterPorEmail(string email)
         {
-            throw new NotImplementedException();
+            return dal.ObterPorEmail(email);
         }
 
         public Cliente ObterPorId(string id)
         {
-            throw new NotImplementedException();
+            return dal.ObterPorId(id);
         }
 
         public List<Cliente> ObterTodos()
         {
-            var dal = new ClienteDAL();
             var lista = dal.ObterTodos();
             return lista;
         }

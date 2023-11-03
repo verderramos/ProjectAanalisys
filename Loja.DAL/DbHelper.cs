@@ -9,7 +9,7 @@ namespace Loja.DAL
 {
     public static class DbHelper
     {
-        private static string conexao
+        public static string conexao
         {
             get
             {
@@ -32,7 +32,7 @@ namespace Loja.DAL
             var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             return reader;
 
-        } 
+        }
         public static int ExecuteNonQuery(string StoredProcedure, params object[] parametros)
         {
             int retorno = 0;
