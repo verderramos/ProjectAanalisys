@@ -1,0 +1,29 @@
+﻿@model Loja.Models.Produto
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<h2>Alterar</h2>
+<form method="post" class="form-horizontal">
+
+    @Html.ValidationSummary(null, new { @class = "text-danger" })
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        <label class="control-label" for="Nome">Nome:</label>
+        <input class="form-control" type="text" name="Nome" value="@Model.Nome" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Preco">Preço:</label>
+        <input class="form-control" type="text" name="Preco" value="@Model.Preco" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Estoque">Estoque:</label>
+        <input class="form-control" type="text" name="Estoque" value="@Model.Estoque" />
+    </div>
+    <div>
+        <input class="btn btn-default" type="submit" value="Gravar" />
+    </div>
+

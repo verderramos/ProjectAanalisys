@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Loja.Models.Produto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Produtos</h2>
+<p>
+    <a class="btn btn-info" href="/Produto/Incluir">Novo</a>
+</p>
+<table class="table">
+    <tr>
+        <th>Nome:</th>
+        <th>Preço:</th>
+    </tr>
+    @foreach (var produto in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(produto.Nome, "Detalhes", new { id = produto.Id })
+            </td>
+            <td>
+                @produto.Preco.ToString("c");
+            </td>
+        </tr>
+    }
+</table>

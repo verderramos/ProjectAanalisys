@@ -1,0 +1,28 @@
+﻿@model Loja.Models.Cliente
+
+@{
+    ViewBag.Title = "Incluir";
+}
+
+<h2>Incluir cliente</h2>
+
+<form method="post" class="form-horizontal">
+
+    @Html.ValidationSummary(null, new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label class="control-label" for="Nome">Nome:</label>
+        <input class="form-control" type="text" name="Nome" value="@Model.Nome" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Email">E-mail:</label>
+        <input class="form-control" type="text" name="Email" value="@Model.Email" />
+    </div>
+    <div class="form-group">
+        <label class="control-label" for="Telefone">Telefone:</label>
+        <input class="form-control" type="text" name="Telefone" value="@Model.Telefone" />
+    </div>
+    <div>
+        <input class="btn btn-default" type="submit" value="Gravar" />
+    </div>
+</form>
