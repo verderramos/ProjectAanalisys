@@ -6,10 +6,9 @@ namespace Loja.Models
 {
     public enum FormaPagamentoEnum
     {
-        Dinheiro=1,
-        Cartão=2,
-        Pix=3,
-        Boleto=4,
-        Depósito=5
+        Dinheiro = 1,
+        Cartão = 2,
+        Boleto = 3,
+        Depósito = 4
     }
 }
