@@ -1,22 +1,142 @@
-﻿@model Loja.Models.Cliente
+﻿@model Loja.UI.Web.Models.PedidoViewModel
 
 @{
     ViewBag.Title = "Detalhes";
 }
 
-<h2>Dados do cliente</h2>
-<dl>
-    <dt>Nome:</dt>
-    <dd>@Model.Nome</dd>
-    <dt>E-mail:</dt>
-    <dd>@Model.Email</dd>
-    <dt>Telefone:</dt>
-    <dd>@Model.Telefone</dd>
-</dl>
+
+<style>
+    td {
+        vertical-align: middle !important;
+    }
+
+    .celula-numero {
+        white-space: nowrap;
+        text-align: right;
+        vertical-align: middle !important;
+    }
+
+    .celula-botao {
+        width: 1%;
+    }
+
+
+    #novoDiv {
+        margin-top: 40px;
+        margin-bottom: 40px;
+    }
+
+
+    .form-horizontal .control-label {
+        text-align: left !important; /* !important added for priority in SO snippet. */
+        width: 100px;
+    }
+</style>
+
+<h2>Detalhes do Pedido</h2>
+
+
+
+
+@using (Html.BeginForm())
+{
+
+
+    <div class="form-horizontal">
+        <h4>Dados do Pedido</h4>
+        <hr />
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    @Model.Data.ToString("d")
+                </p>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClienteId, "Cliente:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    @Model.ClienteNome
+                </p>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FormaPagamento, "Pagamento:", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    @Model.FormaPagamento
+                </p>
+            </div>
+        </div>
+
+
+        <div id="tabelaProdutos">
+            <table class="table">
+                @if (Model.TotalQuantidade > 0)
+                {
+                    <tr>
+                        <th>Nome do Produto</th>
+                        <th class="celula-numero">Quantidade</th>
+                        <th class="celula-numero">Preço Unitário</th>
+                        <th class="celula-numero">Total</th>
+                        <th class="celula-botao"></th>
+                    </tr>
+                }
+                @for (int i = 0; i < Model.Itens.Count; i++)
+                {
+
+
+
+                    <tr>
+                        <td>@Model.Itens[i].ProdutoNome</td>
+                        <td class="celula-numero">@Model.Itens[i].Quantidade</td>
+                        <td class="celula-numero">@Model.Itens[i].Valor.ToString("c")</td>
+                        <td class="celula-numero">@Model.Itens[i].Total.ToString("c")</td>
+                        <td class="celula-botao">
+                            <button type="button" data-produto-id="@Model.Itens[i].ProdutoId" data-produto-nome="@Model.Itens[i].ProdutoNome" class="excluirProdutoButton btn btn-link"><i class="glyphicon glyphicon-remove"></i></button>
+                        </td>
+                    </tr>
+
+                }
+                <tfoot>
+                    @if (Model.TotalQuantidade > 0)
+                    {
+                        <tr>
+                            <th></th>
+                            <th class="celula-numero">@Model.TotalQuantidade</th>
+                            <th class="celula-numero"></th>
+                            <th class="celula-numero">@Model.TotalPreco.ToString("c")</th>
+                            <th class="celula-botao"></th>
+                        </tr>
+                    }
+
+                </tfoot>
+            </table>
+
+        </div>
+
+
+    </div>
+}
 
 <div>
-    <hr/>
-    <a href="/Cliente/Index" class="btn btn-default">Voltar</a>
-    <a href="/Cliente/Alterar/@Model.Id" class="btn btn-default">Alterar</a>
-    <a href="/Cliente/Excluir/@Model.Id" class="btn btn-default">Excluir</a>
+    @Html.ActionLink("Alterar", "Alterar", new { Id = Model.Id })
 </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+}
+
+<div style="margin-top:200px"></div>

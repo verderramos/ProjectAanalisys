@@ -1,25 +1,32 @@
-﻿@model IEnumerable<Loja.Models.Cliente>
+﻿@model  IEnumerable<Loja.UI.Web.Models.PedidoViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Clientes</h2>
+<h2>Pedidos</h2>
+
 <p>
-    <a class="btn btn-info" href="/Cliente/Incluir">Novo</a>
+    <a class="btn btn-info" href="/Pedido/Incluir">Novo...</a>
 </p>
+
 <table class="table">
     <tr>
-        <th>Nome:</th>
-        <th>E-mail:</th>
+        <th>Id</th>
+        <th>Cliente</th>
+        <th>Data</th>
     </tr>
-    @foreach (var cliente in Model)
+
+    @foreach (var pedidoViewModel in Model)
     {
         <tr>
             <td>
-                @Html.ActionLink(cliente.Nome, "Detalhes", new { id = cliente.Id })
+                @Html.ActionLink(pedidoViewModel.Id.ToString(), "Detalhes", new { id = pedidoViewModel.Id })
             </td>
-            <td>@cliente.Email</td>
+            <td>
+                @Html.ActionLink(pedidoViewModel.ClienteNome, "Detalhes", new { id = pedidoViewModel.Id })
+            </td>
+            <td>@pedidoViewModel.Data</td>
         </tr>
     }
 </table>

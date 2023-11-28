@@ -1,28 +1,170 @@
-﻿@model Loja.Models.Cliente
+﻿@model Loja.UI.Web.Models.PedidoViewModel
 
 @{
     ViewBag.Title = "Incluir";
 }
 
-<h2>Incluir cliente</h2>
+<style>
+    td{
+        vertical-align:middle !important;
+    }
+    .celula-numero{
+        white-space:nowrap;
+        text-align:right;
+    }
+    .celula-botao{
+        width:1%;
+    }
+    #novoDiv{
+        margin-top:40px;
+        margin-bottom:40px
+    }
+    .form.form-horizontal .control-label {
+        text-align: left !important;
+        width: 100px;
+    }
+</style>
 
-<form method="post" class="form-horizontal">
+<h2>Incluir Pedido</h2>
+
+@using (Html.BeginForm())
+{
+<div class="form-horizontal">
+    <h4>Novo Pedido</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
+        <p div class="col-md-10">
+            @Model.Data.ToString("d")
+        </p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ClienteId, "Cliente:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.ClienteId, new SelectList(Model.Clientes, "Id", "Nome", Model.ClienteId), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ClienteId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FormaPagamento, "Forma de Pagamento:", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.FormaPagamento, new SelectList(Model.FormasPagamento, Model.FormaPagamento), new { @class = "form-control" })
+        </div>
+    </div>
+    <hr />
+
+
+    <div id="novoDiv" style="display:none">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4>Adicione produtos</h4>
+            </div>
+            <div class="panel-body">   
+                @Html.DropDownListFor(model=>model.NovoItemProdutoId, new SelectList(Model.Produtos, "Id", "Nome"), new {@class = "form-control", style= "float:left;margin-right:10px"})
+                @Html.EditorFor(model => Model.NovoItemQuantidade, new { htmlAttributes = new {@class = "form-control", style="width:70px; float:left;margin-right:10px"}})
+            </div>
+            <div class="panel-footer">
+                <input type="submit" name="incluirProduto" value="Incluir" class="btn btn-default" />
+                <input type="button" id="voltarIncluirProduto" value="Voltar" class="btn btn-default" />
+            </div>
+         </div>
+    </div>
+    <div id="excluirProdutoDiv" style="display:none">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h4>Selecione o produto para excluir</h4>
+            </div>
+            <div class="panel-body">
+                <h4><span id="nomeProdutoParaExcluir"></span></h4>
+                <input type="hidden" name="ExcluirItemProdutoId" id="ExcluirItemProdutoId" />
+                <input type="button" id="voltarExcluirProduto" value="Voltar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    <div id="tabelaProdutos">
+        <table class="table">
+            @if (Model.TotalQuantidade > 0)
+            {
+                <tr>
+                    <th>Produto</th>
+                    <th class="celula-numero">Quantidade</th>
+                    <th class="celula-numero">Preço unitário</th>
+                    <th class="celula-numero">Total</th>
+                    <th class="celula-botao"></th>
+                </tr>
+            }
+
+            @for (int i = 0; i < Model.Itens.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.Itens[i].ProdutoId)
+                @Html.HiddenFor(model => Model.Itens[i].ProdutoNome)
+                @Html.HiddenFor(model => Model.Itens[i].Quantidade)
+                @Html.HiddenFor(model => Model.Itens[i].Valor)
+                <tr>
+                    <td>@Model.Itens[i].ProdutoNome</td>
+                    <td class="celula-numero">@Model.Itens[i].Quantidade</td>
+                    <td class="celula-numero">@Model.Itens[i].Valor.ToString("c")</td>
+                    <td class="celula-numero">@Model.Itens[i].Total.ToString("c")</td>
+                    <td class="celula-botao">
+                        <button type="button" data-produto-id="Model.Itens[i].ProdutoId" data-produto-nome="@Model.Itens[i].ProdutoNome" class="excluirProdutoButton btn btn-link"><i class="glyphicon glyphicon-remove"></i></button>
+                    </td>
+                </tr>
+            }
+                <tfoot>
+                    @if (Model.TotalQuantidade > 0)
+                    {
+                        <tr>
+                            <th></th>
+                            <th class="celula-numero">@Model.TotalQuantidade</th>
+                            <th class="celula-numero"></th>
+                            <th class="celula-numero">@Model.TotalPreco.ToString("c")</th>
+                            <th class="celula-botao"></th>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="5">
+                            <button type="button" id="novoButton" class="btn btn-link" style="padding-left:0px"><i class="glyphicon glyphicon-plus"></i> Adicionar Produto</button>
+                        </td>
+                    </tr>
+                </tfoot>
+        </table>
+    </div>
+
+    <div id="gravarDiv">
+        <hr />
+            <input type="submit" name="Gravar" value="Gravar" class="btn btn-default" />
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
     
-    @Html.ValidationSummary(null, new { @class = "text-danger" } )
+    <script async defer>
+        $(function () {
+            function mostrarOcultarProdutoExcluir() {
+                $('#excluirProdutoDiv').toggle();
+                $('#tabelaProdutos').toggle();
+                $('#gravarDiv').toggle();
 
-    <div class="form-group">
-        <label class="control-label" for="Nome">Nome:</label>
-        <input class="form-control" type="text" name="Nome" value="@Model.Nome"/>
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="Email">E-mail:</label>
-        <input class="form-control" type="text" name="Email" value="@Model.Email" />
-    </div>
-    <div class="form-group">
-        <label class="control-label" for="Telefone:">Telefone:</label>
-        <input class="form-control" type="text" name="Telefone" value="@Model.Telefone" />
-    </div>
-    <div>
-        <input class="btn btn-default" type="submit" value="Gravar" />
-    </div>
-</form>
+                $('#nomeProdutoParaExcluir').text($(this).attr('data-produto-nome'));
+                $('#ExcluirItemProdutoId').val($(this).attr('data-produto-id'));
+            }
+            function mostrarOcultarProdutoIncluir() {
+
+                $('#novoDiv').toggle();
+                $('#tabelaProdutos').toggle();
+                $('#gravarDiv').toggle();
+            }
+            $('#novoButton').click(mostrarOcultarProdutoIncluir);
+            $('#voltarIncluirProduto').click(mostrarOcultarProdutoIncluir);
+
+            $('.excluirProdutoButton').click(mostrarOcultarProdutoExcluir);
+            $('#voltarExcluirProduto').click(mostrarOcultarProdutoExcluir);
+
+        });
+    </script>
+}
+<div style="margin-top:200px"></div>
